@@ -119,12 +119,16 @@ impl Shape for Sphere {
 struct PointLight {
     source: Vector,
     color: Vector,
-    intensity: f64
+    intensity: f64,
 }
 
 impl PointLight {
     fn new(source: Vector, color: Vector, intensity: f64) -> PointLight {
-        PointLight {source, color, intensity}
+        PointLight {
+            source,
+            color,
+            intensity,
+        }
     }
 
     fn illuminate(&self, point: Vector) -> Vector {
@@ -135,8 +139,16 @@ impl PointLight {
 fn raytrace() -> () {
     let sphere = Sphere::new(Vector::new(0.0, 0.0, -10.0), 1.0);
     let light_red = PointLight::new(Vector::new(2.0, 0.0, -9.0), Vector::new(1.0, 0.0, 0.0), 2.0);
-    let light_green = PointLight::new(Vector::new(-2.0, 0.0, -9.0), Vector::new(0.0, 1.0, 0.0), 2.0);
-    let light_blue = PointLight::new(Vector::new(0.0, -2.0, -9.0), Vector::new(0.0, 0.0, 1.0), 2.0);
+    let light_green = PointLight::new(
+        Vector::new(-2.0, 0.0, -9.0),
+        Vector::new(0.0, 1.0, 0.0),
+        2.0,
+    );
+    let light_blue = PointLight::new(
+        Vector::new(0.0, -2.0, -9.0),
+        Vector::new(0.0, 0.0, 1.0),
+        2.0,
+    );
     let shapes: Vec<&Shape> = vec![&sphere];
     let lights: Vec<&PointLight> = vec![&light_red, &light_green, &light_blue];
 
@@ -184,9 +196,9 @@ fn raytrace() -> () {
                 let mut color = Vector::new(0.0, 0.0, 0.0);
                 for &light in &lights {
                     color = color + light.illuminate(r.at(distance));
-                    color.x = if color.x > 1.0 {1.0} else {color.x};
-                    color.y = if color.y > 1.0 {1.0} else {color.y};
-                    color.z = if color.z > 1.0 {1.0} else {color.z};
+                    color.x = if color.x > 1.0 { 1.0 } else { color.x };
+                    color.y = if color.y > 1.0 { 1.0 } else { color.y };
+                    color.z = if color.z > 1.0 { 1.0 } else { color.z };
                 }
                 data[i + 0] = (color.x * 255.0) as u8;
                 data[i + 1] = (color.y * 255.0) as u8;
